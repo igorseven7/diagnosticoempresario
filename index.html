@@ -21,6 +21,10 @@
             box-sizing: border-box;
         }
 
+        html {
+            font-size: 16px;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--background-color);
@@ -35,7 +39,7 @@
 
         .quiz-container {
             width: 100%;
-            max-width: 650px; /* Aumentado para acomodar o novo layout */
+            max-width: 650px;
             margin: 20px;
             position: relative;
         }
@@ -66,17 +70,17 @@
         }
 
         h1 {
-            font-size: 2.2rem;
+            font-size: clamp(1.8rem, 5vw, 2.2rem);
             color: var(--main-purple);
         }
 
         h2 {
-           font-size: 1.5rem;
+           font-size: clamp(1.3rem, 4vw, 1.5rem);
            margin-bottom: 25px;
         }
 
         p, h3 {
-            font-size: 1.1rem;
+            font-size: clamp(1rem, 2.5vw, 1.1rem);
             color: #ccc;
             margin-bottom: 30px;
             max-width: 500px;
@@ -137,7 +141,7 @@
 
         .options-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Layout 2x2 */
+            grid-template-columns: 1fr 1fr;
             gap: 15px;
             width: 100%;
         }
@@ -268,10 +272,8 @@
             visibility: hidden;
         }
         
-        /* Responsividade */
+        /* Responsividade para Mobile */
         @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
-            h2 { font-size: 1.3rem; }
             .options-grid {
                 grid-template-columns: 1fr; /* Coluna única em telas menores */
             }
@@ -293,7 +295,7 @@
                 <input type="tel" id="phone" placeholder="Seu melhor WhatsApp com DDD" required>
                 <p id="error-message">Por favor, insira um telefone válido.</p>
             </div>
-            <button id="start-btn" class="btn btn-primary">COMEÇAR O DIAGNÓSTICO 診断</button>
+            <button id="start-btn" class="btn btn-primary">COMEÇAR O DIAGNÓSTICO ▶️</button>
         </div>
 
         <!-- Tela do Quiz -->
