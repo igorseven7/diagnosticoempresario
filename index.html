@@ -295,7 +295,7 @@
                 <input type="tel" id="phone" placeholder="Seu melhor WhatsApp com DDD" required>
                 <p id="error-message">Por favor, insira um telefone válido.</p>
             </div>
-            <button id="start-btn" class="btn btn-primary">COMEÇAR O DIAGNÓSTICO ▶️</button>
+            <button id="start-btn" class="btn btn-primary">COMEÇAR O DIAGNÓSTICO</button>
         </div>
 
         <!-- Tela do Quiz -->
@@ -321,7 +321,7 @@
 
         <!-- Tela de Resultado -->
         <div id="result-screen" class="screen">
-            <h1>Sua Matriz de Tração Exponencial</h1>
+            <h1 id="result-title">Seu Diagnóstico está Pronto</h1>
             <p>Com base nas suas respostas, aqui está o caminho de 3 etapas para escalar seu faturamento.</p>
 
             <div class="result-steps-container">
@@ -375,7 +375,7 @@
                 }
             },
             {
-                question: "3/6. Se seu faturamento dobrasse, qual seria o maior IMPACTO? �",
+                question: "3/6. Se seu faturamento dobrasse, qual seria o maior IMPACTO? 💰",
                 options: {
                     A: "Lucro para reinvestir e expandir.",
                     B: "Contratar mais e melhorar a estrutura.",
@@ -426,13 +426,15 @@
 
         const loadingScreen = document.getElementById('loading-screen');
         const resultScreen = document.getElementById('result-screen');
-        const whatsappBtn = document.getElementById('whatsapp-btn');
+        const resultTitle = document.getElementById('result-title');
         const bottleneckText = document.getElementById('bottleneck-text');
 
         // --- ESTADO DO QUIZ ---
         let currentQuestionIndex = 0;
         let userAnswers = {};
         let userPhone = '';
+        let finalDiagnosis = '';
+        let finalDiagnosisTitle = '';
 
         // --- FUNÇÕES ---
 
@@ -513,29 +515,37 @@
         function generateDynamicResults() {
             const answerQ2 = userAnswers['pergunta2'];
             let bottleneckMsg = '';
+            let titleMsg = 'Sua Matriz de Tração Exponencial'; // Título padrão
 
             switch (answerQ2) {
                 case 'A':
+                    titleMsg = "Seu Gargalo: Atração de Clientes";
                     bottleneckMsg = "Seu principal gargalo é a <strong>Atração de Clientes Qualificados</strong>. Você gasta tempo e energia com leads que não compram, em vez de focar apenas nos clientes ideais.";
                     break;
                 case 'B':
+                    titleMsg = "Seu Gargalo: Falta de Sistema";
                     bottleneckMsg = "Seu principal gargalo é a <strong>Falta de um Sistema</strong>. Você está preso no operacional, e sem um processo claro de vendas, o crescimento fica travado.";
                     break;
                 case 'C':
+                    titleMsg = "Seu Gargalo: Dependência de Canais";
                     bottleneckMsg = "Seu principal gargalo é a <strong>Dependência de Canais</strong>. Seu faturamento está em risco por depender de indicações ou de uma única fonte de clientes.";
                     break;
                 case 'D':
+                    titleMsg = "Seu Gargalo: Falta de Posicionamento";
                     bottleneckMsg = "Seu principal gargalo é a <strong>Falta de Posicionamento</strong>. No meio de tantos concorrentes, sua empresa não se destaca e você precisa de uma oferta irresistível.";
                     break;
                 default:
                     bottleneckMsg = "Identificamos que há um gargalo claro na sua operação que está impedindo um crescimento mais acelerado e previsível.";
             }
             bottleneckText.innerHTML = bottleneckMsg;
+            resultTitle.textContent = titleMsg;
+            finalDiagnosis = bottleneckMsg;
+            finalDiagnosisTitle = titleMsg;
         }
         
         async function finishQuiz() {
             progressBar.style.width = '100%';
-            generateDynamicResults(); // Gera o resultado dinâmico
+            generateDynamicResults();
             showScreen('loading-screen');
             
             try {
@@ -561,7 +571,9 @@
 
             const payload = {
                 telefone: userPhone,
-                respostas_completas: resumoQuiz
+                respostas_completas: resumoQuiz,
+                diagnostico_titulo: finalDiagnosisTitle,
+                diagnostico_texto: finalDiagnosis
             };
 
             await fetch(webhookUrl, {
@@ -588,4 +600,3 @@
     </script>
 </body>
 </html>
-�
