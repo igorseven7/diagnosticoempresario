@@ -148,6 +148,8 @@
             border: 2px solid var(--dark-purple);
             text-align: left;
             height: 100%;
+            display: flex;
+            align-items: center;
         }
         
         .option-btn.selected {
@@ -321,25 +323,25 @@
             <p>Com base nas suas respostas, aqui está o caminho de 3 etapas para escalar seu faturamento.</p>
 
             <div class="result-steps-container">
-                <div class="result-step">
+                <div id="result-step-1" class="result-step">
                     <div class="emoji">🔍</div>
-                    <h4>Etapa 1: Diagnóstico</h4>
-                    <p>Identificamos os gargalos que limitam seu fluxo de clientes e a previsibilidade do seu faturamento hoje.</p>
+                    <h4>Etapa 1: O Gargalo</h4>
+                    <p id="bottleneck-text">Identificamos o ponto exato que limita seu crescimento e a previsibilidade do seu faturamento hoje.</p>
                 </div>
                 <div class="result-step">
-                    <div class="emoji">📈</div>
-                    <h4>Etapa 2: A Matriz</h4>
-                    <p>A solução é um sistema para atrair clientes qualificados de forma consistente, tornando seu crescimento intencional.</p>
+                    <div class="emoji">⚙️</div>
+                    <h4>Etapa 2: A Máquina de Vendas</h4>
+                    <p>A solução é instalar uma Máquina de Vendas previsível. Um sistema projetado para atrair, converter e escalar seu faturamento no piloto automático.</p>
                 </div>
                 <div class="result-step">
-                    <div class="emoji">🎯</div>
-                    <h4>Etapa 3: Ação I3</h4>
-                    <p>Receba um plano personalizado para aplicar a Estratégia I3 e ativar sua matriz de crescimento imediatamente.</p>
+                    <div class="emoji">⚡️</div>
+                    <h4>Etapa 3: Ativação Imediata</h4>
+                    <p>Na nossa sessão estratégica, você recebe o plano de ação exato para ativar sua Máquina de Vendas com a Estratégia I3. Sem rodeios, direto ao ponto.</p>
                 </div>
             </div>
 
-            <h3>Quer colocar esse plano em ação?</h3>
-            <p>Toque no botão abaixo e agende sua <strong>consultoria estratégica gratuita</strong> diretamente comigo no WhatsApp.</p>
+            <h3>Chega de esperar. É hora de agir.</h3>
+            <p>Toque no botão abaixo e agende sua <strong>consultoria estratégica gratuita</strong> para implementar seu plano de crescimento agora mesmo.</p>
             <a href="https://api.whatsapp.com/send?phone=5521920194389&text=Ol%C3%A1!%20Fiz%20o%20quiz%20e%20quero%20saber%20mais%20sobre%20a%20estrat%C3%A9gia%20I3%20para%20aumentar%20meu%20faturamento." target="_blank" id="whatsapp-btn" class="btn btn-primary whatsapp-btn">
                 <svg class="whatsapp-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="white"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.8 0-67.6-9.5-97.2-27.2l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
                 AGENDAR CONSULTORIA GRÁTIS ✅
@@ -423,6 +425,7 @@
         const loadingScreen = document.getElementById('loading-screen');
         const resultScreen = document.getElementById('result-screen');
         const whatsappBtn = document.getElementById('whatsapp-btn');
+        const bottleneckText = document.getElementById('bottleneck-text');
 
         // --- ESTADO DO QUIZ ---
         let currentQuestionIndex = 0;
@@ -439,7 +442,6 @@
         }
 
         function validatePhone(phone) {
-            // Validação simples: verifica se tem entre 10 e 11 dígitos numéricos.
             const phoneRegex = /^[0-9]{10,11}$/;
             return phoneRegex.test(phone.replace(/\D/g, ''));
         }
@@ -492,43 +494,72 @@
         function selectOption(answer) {
             userAnswers[`pergunta${currentQuestionIndex + 1}`] = answer;
             
-            // Adiciona feedback visual
             const buttons = optionsGrid.querySelectorAll('.option-btn');
             buttons.forEach(btn => btn.classList.remove('selected'));
             event.target.closest('.option-btn').classList.add('selected');
 
             setTimeout(() => {
                 displayQuestion(currentQuestionIndex + 1);
-            }, 400); // Pequeno delay para o próximo
+            }, 400);
         }
 
         function updateProgressBar() {
             const progress = ((currentQuestionIndex) / quizData.length) * 100;
             progressBar.style.width = `${progress}%`;
         }
+
+        function generateDynamicResults() {
+            const answerQ2 = userAnswers['pergunta2'];
+            let bottleneckMsg = '';
+
+            switch (answerQ2) {
+                case 'A':
+                    bottleneckMsg = "Seu principal gargalo é a <strong>Atração de Clientes Qualificados</strong>. Você gasta tempo e energia com leads que não compram, em vez de focar apenas nos clientes ideais.";
+                    break;
+                case 'B':
+                    bottleneckMsg = "Seu principal gargalo é a <strong>Falta de um Sistema</strong>. Você está preso no operacional, e sem um processo claro de vendas, o crescimento fica travado.";
+                    break;
+                case 'C':
+                    bottleneckMsg = "Seu principal gargalo é a <strong>Dependência de Canais</strong>. Seu faturamento está em risco por depender de indicações ou de uma única fonte de clientes.";
+                    break;
+                case 'D':
+                    bottleneckMsg = "Seu principal gargalo é a <strong>Falta de Posicionamento</strong>. No meio de tantos concorrentes, sua empresa não se destaca e você precisa de uma oferta irresistível.";
+                    break;
+                default:
+                    bottleneckMsg = "Identificamos que há um gargalo claro na sua operação que está impedindo um crescimento mais acelerado e previsível.";
+            }
+            bottleneckText.innerHTML = bottleneckMsg;
+        }
         
         async function finishQuiz() {
             progressBar.style.width = '100%';
+            generateDynamicResults(); // Gera o resultado dinâmico
             showScreen('loading-screen');
             
-            // Envia os dados para o webhook
             try {
                 await sendDataToWebhook();
             } catch (error) {
                 console.error('Erro ao enviar dados para o webhook:', error);
-                // O quiz continua mesmo se o webhook falhar
             }
             
-            // Mostra a tela de resultado após a animação de loading
             setTimeout(() => {
                 showScreen('result-screen');
-            }, 6000); // Duração da animação de loading
+            }, 6000);
         }
 
         async function sendDataToWebhook() {
+            const resumoQuiz = {};
+            for (const key in userAnswers) {
+                const questionIndex = parseInt(key.replace('pergunta', '')) - 1;
+                const questionText = quizData[questionIndex].question;
+                const answerKey = userAnswers[key];
+                const answerText = quizData[questionIndex].options[answerKey];
+                resumoQuiz[questionText] = answerText;
+            }
+
             const payload = {
                 telefone: userPhone,
-                respostas: userAnswers
+                respostas_completas: resumoQuiz
             };
 
             await fetch(webhookUrl, {
